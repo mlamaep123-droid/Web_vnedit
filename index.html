@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VNedit Team - Cộng Đồng Editor Bóng Đá Số 1 Việt Nam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased selection:bg-indigo-500 selection:text-white">
+
+    <header class="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 via-red-500 to-yellow-500 flex items-center justify-center font-bold text-sm tracking-wider shadow-lg shadow-red-500/20">
+                    VNE
+                </div>
+                <a href="#" class="text-xl font-extrabold text-white tracking-wider">VNEDIT <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-amber-500">TEAM</span></a>
+            </div>
+            <nav class="hidden md:flex space-x-8 font-semibold text-slate-400">
+                <a href="#hero" class="hover:text-white transition-colors">Trang Chủ</a>
+                <a href="#top-editors" class="hover:text-white transition-colors">Top Editors</a>
+                <a href="#chatbox" class="hover:text-white transition-colors">Trò Chuyện</a>
+                <a href="#" class="hover:text-white transition-colors">Diễn Đàn</a>
+            </nav>
+            <button class="bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white px-5 py-2 rounded-xl font-bold transition-all shadow-lg shadow-red-600/30 text-sm">
+                Đăng Nhập
+            </button>
+        </div>
+    </header>
+
+    <section id="hero" class="max-w-6xl mx-auto px-6 pt-16 pb-12 md:py-24 flex flex-col md:flex-row items-center gap-12">
+        <div class="flex-1 space-y-6 text-center md:text-left">
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3.5 rounded-full text-xs font-bold bg-red-950/50 border border-red-800/60 text-red-400">
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                Sân Chơi Editor Bóng Đá Đỉnh Cao
+            </span>
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                Nơi Hội Tụ Những <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-500 to-amber-500">Bậc Thầy Visuals</span>
+            </h1>
+            <p class="text-base md:text-lg text-slate-400 max-w-lg mx-auto md:mx-0 leading-relaxed">
+                Chào mừng bạn đến với ngôi nhà chung của VNedit Team. Nơi giao lưu, chia sẻ project, đánh giá sản phẩm và xếp hạng những editor đỉnh nhất Việt Nam hiện nay.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center md:justify-start gap-4 pt-2">
+                <a href="#chatbox" class="bg-white hover:bg-slate-200 text-slate-950 text-center px-8 py-3.5 rounded-xl font-bold transition-all shadow-md">
+                    Tham gia chat ngay
+                </a>
+                <a href="#top-editors" class="border border-slate-800 hover:border-slate-700 text-slate-300 text-center px-8 py-3.5 rounded-xl font-bold transition-all bg-slate-900/50">
+                    Bảng xếp hạng <i class="fa-solid fa-trophy ml-1.5 text-amber-500"></i>
+                </a>
+            </div>
+        </div>
+        <div class="flex-1 w-full max-w-md md:max-w-none">
+            <div class="relative group">
+                <div class="absolute -inset-1.5 bg-gradient-to-r from-red-600 to-amber-500 rounded-3xl blur opacity-30 group-hover:opacity-55 transition duration-1000"></div>
+                <div class="relative bg-slate-900 border border-slate-800 p-2.5 rounded-3xl shadow-2xl">
+                    <img class="rounded-2xl w-full aspect-video object-cover" src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80" alt="Football stadium">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="top-editors" class="bg-slate-900/40 py-20 border-t border-slate-900">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                <h2 class="text-3xl font-extrabold text-white">Thành Viên Tiêu Biểu & Top Editor</h2>
+                <p class="text-slate-400">Những gương mặt vàng trong làng edit bóng đá, sở hữu kỹ năng đỉnh cao và đóng góp to lớn cho cộng đồng.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-slate-900/60 p-6 rounded-2xl border border-slate-800/80 shadow-md hover:border-slate-700 transition-all flex flex-col items-center text-center">
+                    <div class="relative mb-5">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-red-500 to-amber-500 rounded-full blur-sm opacity-75"></div>
+                        <div class="relative w-20 h-20 bg-slate-950 rounded-full flex items-center justify-center font-bold text-xl border-2 border-slate-800">
+                            JG
+                        </div>
+                        <span class="absolute bottom-0 right-0 bg-red-600 text-white text-[10px] px-2 py-0.5 rounded-full font-extrabold">TOP 1</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">jg.visualfx</h3>
+                    <p class="text-xs text-slate-500 mb-4">Mở 1000 tab xem s...</p>
+                    <div class="flex flex-wrap gap-2 justify-center">
+                        <span class="text-[10px] font-semibold bg-red-950/80 text-red-400 border border-red-900 px-2.5 py-1 rounded-full">Kỳ cựu</span>
+                        <span class="text-[10px] font-semibold bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full">Lowkey boy</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/60 p-6 rounded-2xl border border-slate-800/80 shadow-md hover:border-slate-700 transition-all flex flex-col items-center text-center">
+                    <div class="relative mb-5">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full blur-sm opacity-75"></div>
+                        <div class="relative w-20 h-20 bg-slate-950 rounded-full flex items-center justify-center font-bold text-xl border-2 border-slate-800">
+                            DN
+                        </div>
+                        <span class="absolute bottom-0 right-0 bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded-full font-extrabold">TOP 2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">dgnamvfx</h3>
+                    <p class="text-xs text-slate-500 mb-4">Active & Support</p>
+                    <div class="flex flex-wrap gap-2 justify-center">
+                        <span class="text-[10px] font-semibold bg-indigo-950/80 text-indigo-400 border border-indigo-900 px-2.5 py-1 rounded-full">Supporter</span>
+                        <span class="text-[10px] font-semibold bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full">Ngố ngố</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/60 p-6 rounded-2xl border border-slate-800/80 shadow-md hover:border-slate-700 transition-all flex flex-col items-center text-center">
+                    <div class="relative mb-5">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full blur-sm opacity-75"></div>
+                        <div class="relative w-20 h-20 bg-slate-950 rounded-full flex items-center justify-center font-bold text-xl border-2 border-slate-800">
+                            KC
+                        </div>
+                        <span class="absolute bottom-0 right-0 bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded-full font-extrabold">TOP 3</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">khanhcristiano</h3>
+                    <p class="text-xs text-slate-500 mb-4">Ngon trung thành v...</p>
+                    <div class="flex flex-wrap gap-2 justify-center">
+                        <span class="text-[10px] font-semibold bg-emerald-950/80 text-emerald-400 border border-emerald-900 px-2.5 py-1 rounded-full">Cứng</span>
+                        <span class="text-[10px] font-semibold bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full">Bao đẹp</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="chatbox" class="py-20 border-t border-slate-900">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-12 space-y-4">
+                <h2 class="text-3xl font-extrabold text-white">VNedit Chatbox <i class="fa-regular fa-comments text-red-500"></i></h2>
+                <p class="text-slate-400">Nơi các editor thảo luận nóng hổi về các phần mềm CapCut, AE, PR và show kết quả giải đấu.</p>
+            </div>
+
+            <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl">
+                <div class="bg-slate-950/60 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span class="font-bold text-white text-sm">Phòng Chat Chung (#global)</span>
+                    </div>
+                    <span class="text-xs text-slate-500">14 đang online</span>
+                </div>
+
+                <div class="p-6 h-[350px] overflow-y-auto space-y-4 text-sm flex flex-col justify-end">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center font-bold text-xs text-indigo-400">JG</div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-slate-200">jg.visualfx</span>
+                                <span class="bg-red-950 text-red-400 text-[9px] px-1.5 py-0.2 rounded font-bold">Kỳ cựu</span>
+                                <span class="text-[10px] text-slate-500">11:30</span>
+                            </div>
+                            <p class="text-slate-300 mt-1">Anh em xem cái transition trong clip mới của tui ổn không? Mới đổi kiểu mượt hơn.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center font-bold text-xs text-emerald-400">KC</div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-slate-200">khanhcristiano</span>
+                                <span class="bg-emerald-950 text-emerald-400 text-[9px] px-1.5 py-0.2 rounded font-bold">Cứng</span>
+                                <span class="text-[10px] text-slate-500">11:32</span>
+                            </div>
+                            <p class="text-slate-300 mt-1">Đỉnh đấy ông ơi, mượt hơn hẳn mấy bản trước. Share project CC hoặc XML cho anh em học với nào!</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-red-600 to-amber-600 flex items-center justify-center font-bold text-xs text-white">ML</div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-white">Mạnh Lâm</span>
+                                <span class="bg-amber-950 text-amber-400 text-[9px] px-1.5 py-0.2 rounded font-bold">Admin/Dev</span>
+                                <span class="text-[10px] text-slate-500">Vừa xong</span>
+                            </div>
+                            <p class="text-slate-300 mt-1">Đang build dần forum xịn cho anh em quẩy đây. Sắp tới sẽ có chỗ lưu trữ preset nhé!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-slate-950/40 border-t border-slate-800 flex gap-3">
+                    <input type="text" placeholder="Nhập tin nhắn..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-200 text-sm focus:outline-none focus:border-red-500 transition-all">
+                    <button class="bg-red-600 hover:bg-red-500 text-white px-5 py-3 rounded-xl font-bold transition-all flex items-center justify-center">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-slate-900 bg-slate-950 py-12">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <span class="text-slate-500 text-sm">© 2026 VNEDIT TEAM. Phát triển bởi Mạnh Lâm.</span>
+            <div class="flex space-x-6 text-slate-400 text-lg">
+                <a href="https://www.tiktok.com/@vnedit_team._" target="_blank" class="hover:text-red-500 transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="#" class="hover:text-red-500 transition-colors"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" class="hover:text-red-500 transition-colors"><i class="fa-brands fa-discord"></i></a>
+            </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
