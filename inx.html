@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VNedit Team Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased min-h-screen flex flex-col">
+
+    <header class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-slate-900">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center font-bold text-sm shadow-lg shadow-red-600/20">
+                    VNE
+                </div>
+                <span class="text-lg font-black tracking-wider">VNEDIT <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-amber-500">TEAM</span></span>
+            </div>
+            
+            <div id="auth-status" class="flex items-center gap-3">
+                </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <section class="lg:col-span-3 bg-slate-900/40 border border-slate-900 rounded-2xl p-4 flex flex-col gap-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-slate-300 text-sm tracking-wider uppercase">Nhóm Trò Chuyện</h3>
+                <button id="btn-add-channel" class="hidden text-xs bg-red-950/60 hover:bg-red-900 border border-red-800/60 text-red-400 px-2.5 py-1 rounded-lg transition-all font-semibold">
+                    + Thêm nhóm
+                </button>
+            </div>
+            <div id="channel-list" class="flex flex-col gap-1">
+                </div>
+        </section>
+
+        <section class="lg:col-span-6 flex flex-col gap-6">
+            
+            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl overflow-hidden flex flex-col h-[450px]">
+                <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-900 flex justify-between items-center">
+                    <div>
+                        <span id="active-channel-name" class="font-bold text-white">#global</span>
+                        <span id="channel-lock-badge" class="ml-2 hidden text-[10px] bg-red-950/80 text-red-400 border border-red-900 px-2 py-0.5 rounded-md font-bold"><i class="fa-solid fa-lock mr-1"></i>Chỉ Admin</span>
+                    </div>
+                    <span class="text-xs text-slate-500" id="online-count">Đang online</span>
+                </div>
+
+                <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 text-sm">
+                    </div>
+
+                <div id="chat-input-container" class="p-3 bg-slate-950/50 border-t border-slate-900 flex gap-2">
+                    </div>
+            </div>
+
+            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-5 space-y-4">
+                <h3 class="font-bold text-lg text-white">Nộp Clip Đua Top <i class="fa-solid fa-fire text-amber-500 ml-1"></i></h3>
+                <div id="video-submit-form" class="space-y-3">
+                    </div>
+            </div>
+        </section>
+
+        <section class="lg:col-span-3 flex flex-col gap-6">
+            
+            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-4 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-bold text-slate-300 text-sm uppercase tracking-wider">Bảng Xếp Hạng</h3>
+                    <i class="fa-solid fa-trophy text-amber-500"></i>
+                </div>
+                <div id="leaderboard-list" class="space-y-3">
+                    </div>
+            </div>
+
+            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-4 space-y-4">
+                <h3 class="font-bold text-slate-300 text-sm uppercase tracking-wider">Clips Chờ Chấm Điểm</h3>
+                <div id="pending-videos" class="space-y-3 max-h-[250px] overflow-y-auto">
+                    </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl w-full max-w-sm space-y-4">
+            <h3 class="text-xl font-bold text-white">Đăng Nhập Tài Khoản</h3>
+            <p class="text-xs text-slate-400">Thiết lập nhanh thông tin để trải nghiệm thử nghiệm tính năng chat và nộp clip.</p>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-1">Biệt danh của bạn</label>
+                    <input id="modal-username" type="text" placeholder="Ví dụ: jg.visualfx" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-red-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-1">Chọn vai trò Demo</label>
+                    <select id="modal-role" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-red-500">
+                        <option value="member">Thành viên thường (Editor)</option>
+                        <option value="owner">Chủ Bốc / Chủ Nhóm (Owner)</option>
+                    </select>
+                </div>
+                <button id="btn-login-submit" class="w-full bg-gradient-to-r from-red-600 to-amber-600 py-2.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all">
+                    Xác Nhận Đăng Nhập
+                </button>
+                <div class="relative flex py-1 items-center">
+                    <div class="flex-grow border-t border-slate-800"></div>
+                    <span class="flex-shrink mx-4 text-slate-500 text-xs">Hoặc</span>
+                    <div class="flex-grow border-t border-slate-800"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="mockOAuth('Gmail')" class="bg-slate-950 border border-slate-800 hover:border-slate-700 py-2 rounded-xl text-xs flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-google text-red-500"></i> Gmail
+                    </button>
+                    <button onclick="mockOAuth('TikTok')" class="bg-slate-950 border border-slate-800 hover:border-slate-700 py-2 rounded-xl text-xs flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-tiktok text-white"></i> TikTok
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="border-t border-slate-900 bg-slate-950 py-6 mt-12 text-center text-slate-600 text-xs">
+        <p>© 2026 VNedit Team. Phát triển bởi Mạnh Lâm trên MiPad.</p>
+    </footer>
+
+    <script>
+        // --- 1. DỮ LIỆU BAN ĐẦU ---
+        const DEFAULT_CHANNELS = [
+            { id: 'global', name: 'global', isLocked: false },
+            { id: 'giao-dich', name: 'giao-dich', isLocked: true },
+            { id: 'show-clip', name: 'show-clip', isLocked: false }
+        ];
+
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        let channels = JSON.parse(localStorage.getItem('channels')) || DEFAULT_CHANNELS;
+        let messages = JSON.parse(localStorage.getItem('messages')) || [];
+        let videos = JSON.parse(localStorage.getItem('videos')) || [];
+        let activeChannelId = 'global';
+
+        // --- 2. KHỞI CHẠY ---
+        document.addEventListener("DOMContentLoaded", () => {
+            renderAuthStatus();
+            renderChannels();
+            renderChatInput();
+            renderMessages();
+            renderVideoSubmitForm();
+            renderLeaderboardAndPending();
+        });
+
+        // --- 3. ĐĂNG KÝ / ĐĂNG NHẬP ---
+        function renderAuthStatus() {
+            const container = document.getElementById('auth-status');
+            if (currentUser) {
+                container.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="text-right">
+                            <p class="text-sm font-bold text-white">${currentUser.username}</p>
+                            <span class="text-[10px] uppercase font-extrabold px-1.5 py-0.2 rounded ${currentUser.role === 'owner' ? 'bg-red-950 text-red-400 border border-red-900' : 'bg-slate-800 text-slate-300'}">
+                                ${currentUser.role === 'owner' ? 'Owner / Chủ Bốc' : 'Thành viên'}
+                            </span>
+                        </div>
+                        <button onclick="logout()" class="text-xs text-slate-400 hover:text-red-500 transition-colors">Đăng xuất</button>
+                    </div>
+                `;
+                if (currentUser.role === 'owner') {
+                    document.getElementById('btn-add-channel').classList.remove('hidden');
+                } else {
+                    document.getElementById('btn-add-channel').classList.add('hidden');
+                }
+            } else {
+                container.innerHTML = `
+                    <button onclick="openAuthModal()" class="bg-gradient-to-r from-red-600 to-amber-600 hover:opacity-90 text-white px-4 py-2 rounded-xl font-bold transition-all text-xs">
+                        Đăng Nhập / Đăng Ký
+                    </button>
+                `;
+                document.getElementById('btn-add-channel').classList.add('hidden');
+            }
+        }
+
+        function openAuthModal() {
+            document.getElementById('auth-modal').classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        document.getElementById('btn-login-submit').addEventListener('click', () => {
+            const usernameInput = document.getElementById('modal-username').value.trim();
+            const roleSelect = document.getElementById('modal-role').value;
+            if (!usernameInput) return alert('Vui lòng nhập biệt danh!');
+
+            currentUser = { username: usernameInput, role: roleSelect };
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            closeAuthModal();
+            renderAuthStatus();
+            renderChatInput();
+            renderVideoSubmitForm();
+            renderLeaderboardAndPending();
+        });
+
+        function mockOAuth(platform) {
+            const username = prompt(`Nhập biệt danh của bạn để liên kết nhanh qua ${platform}:`);
+            if (username && username.trim() !== "") {
+                currentUser = { username: username.trim(), role: 'member' };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                closeAuthModal();
+                renderAuthStatus();
+                renderChatInput();
+                renderVideoSubmitForm();
+                renderLeaderboardAndPending();
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            renderAuthStatus();
+            renderChatInput();
+            renderVideoSubmitForm();
+            renderLeaderboardAndPending();
+        }
+
+        // --- 4. QUẢN LÝ PHÒNG CHAT ---
+        function renderChannels() {
+            const container = document.getElementById('channel-list');
+            container.innerHTML = '';
+            channels.forEach(ch => {
+                const isActive = ch.id === activeChannelId;
+                container.innerHTML += `
+                    <button onclick="switchChannel('${ch.id}')" class="w-full text-left px-3 py-2 rounded-xl text-sm flex items-center justify-between transition-all ${isActive ? 'bg-slate-900 text-white border-l-2 border-red-500 font-bold' : 'text-slate-400 hover:bg-slate-900/40 hover:text-slate-200'}">
+                        <span># ${ch.name}</span>
+                        ${ch.isLocked ? '<i class="fa-solid fa-lock text-slate-500 text-xs"></i>' : ''}
+                    </button>
+                `;
+            });
+        }
+
+        function switchChannel(channelId) {
+            activeChannelId = channelId;
+            renderChannels();
+            const targetCh = channels.find(ch => ch.id === channelId);
+            document.getElementById('active-channel-name').innerText = `#${targetCh.name}`;
+            if (targetCh.isLocked) {
+                document.getElementById('channel-lock-badge').classList.remove('hidden');
+            } else {
+                document.getElementById('channel-lock-badge').classList.add('hidden');
+            }
+            renderChatInput();
+            renderMessages();
+        }
+
+        document.getElementById('btn-add-channel').addEventListener('click', () => {
+            if (!currentUser || currentUser.role !== 'owner') return;
+            const newName = prompt("Nhập tên nhóm chat mới (viết liền không dấu, ví dụ: 'giao-luu-ae'):");
+            if (!newName) return;
+            const formattedName = newName.toLowerCase().replace(/\s+/g, '-');
+            const isLocked = confirm("Khóa nhóm chat này (Chỉ Owner/Chủ bốc được gửi tin nhắn)?");
+            
+            channels.push({ id: formattedName, name: formattedName, isLocked: isLocked });
+            localStorage.setItem('channels', JSON.stringify(channels));
+            renderChannels();
+        });
+
+        // --- 5. TIN NHẮN (CHAT) ---
+        function renderChatInput() {
+            const container = document.getElementById('chat-input-container');
+            const targetCh = channels.find(ch => ch.id === activeChannelId);
+
+            if (!currentUser) {
+                container.innerHTML = `
+                    <div class="w-full text-center py-2 text-xs text-slate-500">
+                        Vui lòng <button onclick="openAuthModal()" class="text-red-500 underline font-bold">đăng nhập</button> để bắt đầu trò chuyện.
+                    </div>
+                `;
+                return;
+            }
+
+            if (targetCh.isLocked && currentUser.role !== 'owner') {
+                container.innerHTML = `
+                    <div class="w-full text-center py-2 text-xs text-red-500/80 font-bold">
+                        <i class="fa-solid fa-lock mr-1"></i> Nhóm chat này bị khóa. Chỉ có Chủ Bốc được quyền nhắn ở đây.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <input id="input-msg-text" type="text" placeholder="Nhắn tin vào #${targetCh.name}..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-200 text-sm focus:outline-none focus:border-red-500 transition-all">
+                <button onclick="sendMessage()" class="bg-red-600 hover:bg-red-500 text-white px-5 py-2.5 rounded-xl font-bold transition-all">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            `;
+
+            // Lắng nghe phím Enter
+            document.getElementById('input-msg-text').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('input-msg-text');
+            if (!input || !input.value.trim()) return;
+
+            const newMsg = {
+                id: Date.now(),
+                channelId: activeChannelId,
+                username: currentUser.username,
+                role: currentUser.role,
+                text: input.value.trim(),
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+
+            messages.push(newMsg);
+            localStorage.setItem('messages', JSON.stringify(messages));
+            input.value = '';
+            renderMessages();
+        }
+
+        function renderMessages() {
+            const container = document.getElementById('chat-messages');
+            container.innerHTML = '';
+            
+            const filtered = messages.filter(m => m.channelId === activeChannelId);
+            
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="text-center text-slate-600 text-xs py-8">Chưa có tin nhắn nào ở đây. Bắt đầu cuộc trò chuyện ngay!</div>`;
+                return;
+            }
+
+            filtered.forEach(m => {
+                const isOwner = m.role === 'owner';
+                container.innerHTML += `
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-xs ${isOwner ? 'bg-gradient-to-tr from-red-600 to-amber-500 text-white' : 'bg-slate-800 text-indigo-400'}">
+                            ${m.username.substring(0, 2).toUpperCase()}
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-slate-200">${m.username}</span>
+                                ${isOwner ? '<span class="bg-red-950 text-red-400 text-[9px] px-1.5 py-0.2 rounded font-bold">Owner</span>' : ''}
+                                <span class="text-[10px] text-slate-500">${m.time}</span>
+                            </div>
+                            <p class="text-slate-300 mt-1">${m.text}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            // Tự cuộn xuống cuối
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // --- 6. NỘP VIDEO VÀ CHẤM ĐIỂM (BẢNG XẾP HẠNG) ---
+        function renderVideoSubmitForm() {
+            const container = document.getElementById('video-submit-form');
+            if (!currentUser) {
+                container.innerHTML = `<p class="text-xs text-slate-500">Đăng nhập để có thể đăng link video tham gia đua top.</p>`;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <input id="input-vid-title" type="text" placeholder="Tên Clip (VD: Messi Topo Gigio Edit)" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-red-500 text-white">
+                    <input id="input-vid-url" type="text" placeholder="Đường dẫn Clip (TikTok/YouTube)" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-red-500 text-white">
+                </div>
+                <button onclick="submitVideo()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs py-2 rounded-xl font-bold transition-all">
+                    Nộp Bài Ngay
+                </button>
+            `;
+        }
+
+        function submitVideo() {
+            const title = document.getElementById('input-vid-title').value.trim();
+            const url = document.getElementById('input-vid-url').value.trim();
+            if (!title || !url) return alert('Vui lòng điền đầy đủ tên clip và link clip!');
+
+            const newVid = {
+                id: Date.now(),
+                creator: currentUser.username,
+                title: title,
+                url: url,
+                score: null // Sẽ chờ Owner chấm điểm
+            };
+
+            videos.push(newVid);
+            localStorage.setItem('videos', JSON.stringify(videos));
+            alert('Nộp clip thành công! Chờ Chủ Bốc (Owner) duyệt và chấm điểm.');
+            document.getElementById('input-vid-title').value = '';
+            document.getElementById('input-vid-url').value = '';
+            renderLeaderboardAndPending();
+        }
+
+        function renderLeaderboardAndPending() {
+            const leaderboardContainer = document.getElementById('leaderboard-list');
+            const pendingContainer = document.getElementById('pending-videos');
+            
+            leaderboardContainer.innerHTML = '';
+            pendingContainer.innerHTML = '';
+
+            // 1. Phân loại video: Đã chấm điểm (để đưa vào Bảng xếp hạng) và Chưa chấm điểm (Chờ duyệt)
+            const gradedVideos = videos.filter(v => v.score !== null).sort((a, b) => b.score - a.score);
+            const pendingVideos = videos.filter(v => v.score === null);
+
+            // Render Bảng xếp hạng
+            if (gradedVideos.length === 0) {
+                leaderboardContainer.innerHTML = `<p class="text-xs text-slate-600 italic">Chưa có bảng xếp hạng. Hãy chờ Chủ Bốc chấm điểm!</p>`;
+            } else {
+                gradedVideos.forEach((v, index) => {
+                    let medal = `<span class="text-slate-400 font-bold text-xs">#${index + 1}</span>`;
+                    if (index === 0) medal = `🥇`;
+                    if (index === 1) medal = `🥈`;
+                    if (index === 2) medal = `🥉`;
+
+                    leaderboardContainer.innerHTML += `
+                        <div class="flex items-center justify-between bg-slate-900/50 p-3 rounded-xl border border-slate-800/60">
+                            <div class="flex items-center gap-3">
+                                ${medal}
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">${v.creator}</h4>
+                                    <a href="${v.url}" target="_blank" class="text-[10px] text-slate-500 hover:underline">${v.title} <i class="fa-solid fa-up-right-from-square"></i></a>
+                                </div>
+                            </div>
+                            <span class="text-xs font-extrabold text-amber-500 bg-amber-950/40 px-2 py-0.5 rounded border border-amber-900/40">${v.score}đ</span>
+                        </div>
+                    `;
+                });
+            }
+
+            // Render Clips Chờ Chấm Điểm
+            if (pendingVideos.length === 0) {
+                pendingContainer.innerHTML = `<p class="text-xs text-slate-600 italic">Không có clip nào đang chờ duyệt.</p>`;
+            } else {
+                pendingVideos.forEach(v => {
+                    const isOwner = currentUser && currentUser.role === 'owner';
+                    pendingContainer.innerHTML += `
+                        <div class="bg-slate-950 border border-slate-900 p-3 rounded-xl space-y-2">
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-300">Editor: ${v.creator}</h4>
+                                <a href="${v.url}" target="_blank" class="text-[10px] text-red-400 hover:underline">${v.title} <i class="fa-solid fa-up-right-from-square"></i></a>
+                            </div>
+                            ${isOwner ? `
+                                <div class="flex gap-2">
+                                    <input id="score-input-${v.id}" type="number" step="0.1" placeholder="Điểm (VD: 9.5)" class="w-24 bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none">
+                                    <button onclick="gradeVideo(${v.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1 rounded text-xs font-bold transition-all">Lưu</button>
+                                </div>
+                            ` : '<p class="text-[10px] text-slate-500 italic">Đang chờ Chủ Bốc chấm điểm...</p>'}
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        // Hàm dành riêng cho Owner chấm điểm
+        window.gradeVideo = function(vidId) {
+            const scoreInput = document.getElementById(`score-input-${vidId}`);
+            if (!scoreInput) return;
+            const score = parseFloat(scoreInput.value);
+            if (isNaN(score) || score < 0 || score > 10) return alert('Vui lòng nhập số điểm hợp lệ từ 0 đến 10!');
+
+            const vidIndex = videos.findIndex(v => v.id === vidId);
+            if (vidIndex !== -1) {
+                videos[vidIndex].score = score;
+                localStorage.setItem('videos', JSON.stringify(videos));
+                alert('Chấm điểm thành công! Bảng xếp hạng đã cập nhật.');
+                renderLeaderboardAndPending();
+            }
+        }
+    </script>
+</body>
+</html>
