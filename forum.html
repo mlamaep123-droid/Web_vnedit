@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VNedit Team Portal - Realtime Chat</title>
+    <title>Diễn Đàn VNedit Team</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,7 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #020617; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
     </style>
@@ -19,101 +19,154 @@
 <body class="bg-slate-950 text-slate-100 antialiased min-h-screen flex flex-col">
 
     <header class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-slate-900">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center font-bold text-sm shadow-lg shadow-red-600/20">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center font-bold text-xs shadow-lg shadow-red-600/20">
                     VNE
                 </div>
-                <span class="text-lg font-black tracking-wider">VNEDIT <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-amber-500">TEAM</span></span>
+                <span class="text-base font-black tracking-wider">VNEDIT <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-amber-500">FORUM</span></span>
             </div>
             
-            <div id="auth-status" class="flex items-center gap-3"></div>
+            <div class="flex items-center gap-4">
+                <div id="forum-user-display" class="text-xs text-slate-400"></div>
+                <a href="index.html" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-xl transition-all font-semibold flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-left"></i> Quay lại Chat
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        <section class="lg:col-span-3 bg-slate-900/40 border border-slate-900 rounded-2xl p-4 flex flex-col gap-4">
-            <div class="flex justify-between items-center">
-                <h3 class="font-bold text-slate-300 text-sm tracking-wider uppercase">Nhóm Trò Chuyện</h3>
-                <button id="btn-add-channel" class="hidden text-xs bg-red-950/60 hover:bg-red-900 border border-red-800/60 text-red-400 px-2.5 py-1 rounded-lg transition-all font-semibold">
-                    + Thêm nhóm
+        <section class="lg:col-span-4 bg-slate-900/30 border border-slate-900 rounded-2xl p-4 space-y-5 max-h-[750px] overflow-y-auto">
+            
+            <div class="space-y-1">
+                <h3 class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-2 mb-1.5">📢 Thông Tin Chung</h3>
+                <div id="cat-group-1" class="space-y-0.5">
+                    <button onclick="switchCategory('luat-forum')" id="btn-luat-forum" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-300 bg-slate-900 font-bold border-l-2 border-red-500">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-gavel text-slate-500"></i> luật-diễn-đàn</span>
+                    </button>
+                    <button onclick="switchCategory('thong-bao')" id="btn-thong-bao" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-bullhorn text-slate-500"></i> thông-báo-chung</span>
+                    </button>
+                    <button onclick="switchCategory('tai-tro-vne')" id="btn-tai-tro-vne" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-hand-holding-dollar text-slate-500"></i> nhà-tài-trợ</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <h3 class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-2 mb-1.5">💻 After Effects / PC Edit</h3>
+                <div id="cat-group-2" class="space-y-0.5">
+                    <button onclick="switchCategory('ae-tutorials')" id="btn-ae-tutorials" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-chalkboard-user text-slate-500"></i> ae-tutorials</span>
+                    </button>
+                    <button onclick="switchCategory('share-project-ae')" id="btn-share-project-ae" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200">
+                        <span class="flex items-center gap-2"><i class="fa-regular fa-folder-open text-slate-500"></i> share-project-aep</span>
+                    </button>
+                    <button onclick="switchCategory('ae-presets')" id="btn-ae-presets" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-slate-500"></i> preset-ffx-ae</span>
+                    </button>
+                    <button onclick="switchCategory('ae-plugins')" id="btn-ae-plugins" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-puzzle-piece text-slate-500"></i> plug-ins-ae</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <h3 class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-2 mb-1.5">📱 CapCut & Mobile Edit</h3>
+                <div id="cat-group-3" class="space-y-0.5">
+                    <button onclick="switchCategory('capcut-mobile')" id="btn-capcut-mobile" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-mobile-screen text-slate-500"></i> capcut-mobile-tips</span>
+                    </button>
+                    <button onclick="switchCategory('xml-presets')" id="btn-xml-presets" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-code text-slate-500"></i> share-xml-alight</span>
+                    </button>
+                    <button onclick="switchCategory('overlay-resources')" id="btn-overlay-resources" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-photo-film text-slate-500"></i> overlay-nhạc-màu</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <h3 class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-2 mb-1.5">🏆 Chấm Điểm & Đua Top</h3>
+                <div id="cat-group-4" class="space-y-0.5">
+                    <button onclick="switchCategory('giao-luu-vne')" id="btn-giao-luu-vne" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-trophy text-slate-500"></i> giải-đấu-vne</span>
+                    </button>
+                    <button onclick="switchCategory('feedback-admin')" id="btn-feedback-admin" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-user-shield text-slate-500"></i> admin-chấm-bài</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <h3 class="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-2 mb-1.5">🤝 Giao Lưu & Thương Mại</h3>
+                <div id="cat-group-5" class="space-y-0.5">
+                    <button onclick="switchCategory('giao-luu-editor')" id="btn-giao-luu-editor" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200">
+                        <span class="flex items-center gap-2"><i class="fa-regular fa-comments text-slate-500"></i> trò-chuyện-linh-tinh</span>
+                    </button>
+                    <button onclick="switchCategory('tuyen-dung-editor')" id="btn-tuyen-dung-editor" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-briefcase text-slate-500"></i> tuyển-dụng-editor</span>
+                    </button>
+                    <button onclick="switchCategory('cho-preset')" id="btn-cho-preset" class="w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-cart-shopping text-slate-500"></i> mua-bán-giao-dịch</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="lg:col-span-8 space-y-5">
+            
+            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div>
+                    <h2 id="current-category-title" class="text-base md:text-lg font-extrabold text-white flex items-center gap-2"># luật-diễn-đàn</h2>
+                    <p id="current-category-desc" class="text-xs text-slate-400 mt-1">Nơi phổ biến các quy định bắt buộc đối với tất cả thành viên khi tham gia VNedit Team.</p>
+                </div>
+                <button onclick="openPostModal()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 shadow-lg shadow-red-600/10">
+                    <i class="fa-solid fa-pen-to-square mr-1"></i> Đăng Bài
                 </button>
             </div>
-            <div id="channel-list" class="flex flex-col gap-1"></div>
-        </section>
 
-        <section class="lg:col-span-6 flex flex-col gap-6">
-            
-            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl overflow-hidden flex flex-col h-[450px]">
-                <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-900 flex justify-between items-center">
-                    <div>
-                        <span id="active-channel-name" class="font-bold text-white">#global</span>
-                        <span id="channel-lock-badge" class="ml-2 hidden text-[10px] bg-red-950/80 text-red-400 border border-red-900 px-2 py-0.5 rounded-md font-bold"><i class="fa-solid fa-lock mr-1"></i>Chỉ Admin</span>
-                    </div>
-                    <span class="text-xs text-slate-500" id="online-count">Thời gian thực (Firebase)</span>
+            <div id="posts-container" class="space-y-4">
+                <div class="text-center py-12">
+                    <p class="text-xs text-slate-500">Đang tải các bài viết từ cơ sở dữ liệu...</p>
                 </div>
-
-                <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 text-sm">
-                    <div class="text-center text-slate-600 text-xs py-8">Đang kết nối đến máy chủ chat thật...</div>
-                </div>
-
-                <div id="chat-input-container" class="p-3 bg-slate-950/50 border-t border-slate-900 flex gap-2"></div>
-            </div>
-
-            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-5 space-y-4">
-                <h3 class="font-bold text-lg text-white">Nộp Clip Đua Top <i class="fa-solid fa-fire text-amber-500 ml-1"></i></h3>
-                <div id="video-submit-form" class="space-y-3"></div>
-            </div>
-        </section>
-
-        <section class="lg:col-span-3 flex flex-col gap-6">
-            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-4 space-y-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-bold text-slate-300 text-sm uppercase tracking-wider">Bảng Xếp Hạng</h3>
-                    <i class="fa-solid fa-trophy text-amber-500"></i>
-                </div>
-                <div id="leaderboard-list" class="space-y-3"></div>
-            </div>
-
-            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-4 space-y-4">
-                <h3 class="font-bold text-slate-300 text-sm uppercase tracking-wider">Clips Chờ Chấm Điểm</h3>
-                <div id="pending-videos" class="space-y-3 max-h-[250px] overflow-y-auto"></div>
             </div>
         </section>
     </main>
 
-    <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl w-full max-w-sm space-y-4">
-            <h3 class="text-xl font-bold text-white">Đăng Nhập Tài Khoản</h3>
-            <p class="text-xs text-slate-400">Đặt biệt danh của bạn để nhắn tin và nộp clip thật lên cộng đồng.</p>
-            <div class="space-y-3">
-                <div>
+    <div id="post-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl w-full max-w-lg space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white">Đăng bài viết mới</h3>
+                <button onclick="closePostModal()" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3 text-sm">
+                <div id="author-input-wrapper">
                     <label class="block text-xs font-bold text-slate-400 mb-1">Biệt danh của bạn</label>
-                    <input id="modal-username" type="text" placeholder="Ví dụ: jg.visualfx" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-red-500">
+                    <input id="post-author" type="text" placeholder="Ví dụ: jg.visualfx" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-red-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-1">Chọn vai trò Demo</label>
-                    <select id="modal-role" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-red-500">
-                        <option value="member">Thành viên thường (Editor)</option>
-                        <option value="owner">Chủ Bốc / Chủ Nhóm (Owner)</option>
-                    </select>
+                    <label class="block text-xs font-bold text-slate-400 mb-1">Tiêu đề bài viết</label>
+                    <input id="post-title" type="text" placeholder="Nhập tiêu đề nổi bật thu hút người xem..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-red-500">
                 </div>
-                <button id="btn-login-submit" class="w-full bg-gradient-to-r from-red-600 to-amber-600 py-2.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all">
-                    Xác Nhận Đăng Nhập
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-1">Nội dung bài viết</label>
+                    <textarea id="post-content" rows="6" placeholder="Viết nội dung, chia sẻ link drive project/preset, cách cài đặt chi tiết..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-red-500"></textarea>
+                </div>
+                <button onclick="submitNewPost()" class="w-full bg-gradient-to-r from-red-600 to-amber-600 hover:opacity-90 text-white py-2.5 rounded-xl font-bold transition-all text-sm">
+                    Xác nhận đăng bài lên hệ thống
                 </button>
             </div>
         </div>
     </div>
 
-    <footer class="border-t border-slate-900 bg-slate-950 py-6 text-center text-slate-600 text-xs">
-        <p>© 2026 VNedit Team. Phát triển bởi Mạnh Lâm trên MiPad.</p>
+    <footer class="border-t border-slate-900 bg-slate-950 py-6 text-center text-slate-600 text-xs mt-auto">
+        <p>© 2026 VNedit Team Forum thuộc owner Đình Đức. Phát triển bởi Mạnh Lâm.</p>
     </footer>
 
     <script>
-        // --- CẤU HÌNH DATABASE THẬT (FIREBASE) ---
-        // Tôi tạo sẵn một database dùng chung tạm thời cho bạn test. 
-        // Sau này bạn có thể đổi thông tin config này bằng tài khoản Firebase của bạn hoặc của "Chủ Bốc"
         const firebaseConfig = {
             databaseURL: "https://vnedit-team-default-rtdb.firebaseio.com/"
         };
@@ -121,329 +174,160 @@
         const db = firebase.database();
 
         let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-        let activeChannelId = 'global';
-        let channels = [];
+        let activeCategory = 'luat-forum';
+        let allPosts = [];
 
-        // Khởi chạy khi tải trang
+        // Toàn bộ cơ sở dữ liệu phân mục chi tiết
+        const CATEGORY_INFOS = {
+            'luat-forum': { title: '🔨 luật-diễn-đàn', desc: 'Các quy định xử phạt nghiêm cấm đăng link bậy bạ hoặc spam phá nhóm.' },
+            'thong-bao': { title: '📢 thông-báo-chung', desc: 'Các thông báo mới nhất từ admin và chủ bốc về định hướng hoạt động nhóm.' },
+            'tai-tro-vne': { title: '🤝 nhà-tài-trợ', desc: 'Nơi vinh danh các nhà tài trợ tài chính, cung cấp kinh phí đua top giải đấu cho team.' },
+            
+            'ae-tutorials': { title: '📽️ ae-tutorials', desc: 'Chia sẻ các video và bài viết hướng dẫn After Effects chuyên sâu từ các cao thủ.' },
+            'share-project-ae': { title: '📂 share-project-aep', desc: 'Tổng hợp file Project AE (.aep) mẫu bóng đá chất lượng cao để anh em mổ xẻ học hỏi.' },
+            'ae-presets': { title: '✨ preset-ffx-ae', desc: 'Nơi share các file Preset (.ffx) về chỉnh màu, giật giật mượt mà, CC, Shakes...' },
+            'ae-plugins': { title: '🧩 plug-ins-ae', desc: 'Nơi chia sẻ link tải các plugin làm clip siêu đẹp như Sapphire, Twixtor, RSMB, Deep Glow...' },
+
+            'capcut-mobile': { title: '📱 capcut-mobile-tips', desc: 'Nơi học hỏi các thủ thuật edit giật giật, lướt sáng mượt mà bằng Capcut trên điện thoại.' },
+            'xml-presets': { title: '💻 share-xml-alight', desc: 'Dành riêng cho ae hệ Alight Motion chia sẻ tệp XML mượt mà, chất lượng cao.' },
+            'overlay-resources': { title: '🌌 overlay-nhạc-màu', desc: 'Kho tài nguyên overlay khói lửa, tia sáng, lyrics nhạc nền cực đỉnh cho editor.' },
+
+            'giao-luu-vne': { title: '🏆 giải-đấu-vne', desc: 'Cập nhật diễn biến các giải đấu nội bộ tranh cup và tiền mặt do Owner tổ chức.' },
+            'feedback-admin': { title: '🛡️ admin-chấm-bài', desc: 'Admin feedback chi tiết, chỉ ra lỗi và chấm điểm kĩ thuật cho các bài nộp đua top.' },
+
+            'giao-luu-editor': { title: '💬 trò-chuyện-linh-tinh', desc: 'Box tám chuyện, làm quen, bàn tán chuyện bóng đá thế giới ngoài lề edit.' },
+            'tuyen-dung-editor': { title: '💼 tuyển-dụng-editor', desc: 'Nơi các chủ kênh TikTok/Youtube vào đăng tin tuyển Editor làm việc lâu dài hoặc freelance.' },
+            'cho-preset': { title: '🛒 mua-bán-giao-dịch', desc: 'Chợ mua bán, trao đổi các preset edit hiếm, bán tài khoản Canva, tài khoản AE giá ưu đãi.' }
+        };
+
         document.addEventListener("DOMContentLoaded", () => {
-            renderAuthStatus();
-            listenChannels();
-            listenMessages();
-            listenVideos();
-        });
-
-        // --- 1. XỬ LÝ ĐĂNG NHẬP / ĐĂNG KÝ (LƯU TRÊN TRÌNH DUYỆT CỦA BẠN) ---
-        function renderAuthStatus() {
-            const container = document.getElementById('auth-status');
+            const userDisplay = document.getElementById('forum-user-display');
             if (currentUser) {
-                container.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="text-right">
-                            <p class="text-sm font-bold text-white">${currentUser.username}</p>
-                            <span class="text-[10px] uppercase font-extrabold px-1.5 py-0.2 rounded ${currentUser.role === 'owner' ? 'bg-red-950 text-red-400 border border-red-900' : 'bg-slate-800 text-slate-300'}">
-                                ${currentUser.role === 'owner' ? 'Owner / Chủ Bốc' : 'Thành viên'}
-                            </span>
-                        </div>
-                        <button onclick="logout()" class="text-xs text-slate-400 hover:text-red-500 transition-colors">Đăng xuất</button>
-                    </div>
-                `;
-                if (currentUser.role === 'owner') {
-                    document.getElementById('btn-add-channel').classList.remove('hidden');
-                } else {
-                    document.getElementById('btn-add-channel').classList.add('hidden');
-                }
+                userDisplay.innerHTML = `<span class="bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl">👤 Editor: <strong class="text-white">${currentUser.username}</strong></span>`;
+                document.getElementById('author-input-wrapper').style.display = 'none';
             } else {
-                container.innerHTML = `
-                    <button onclick="openAuthModal()" class="bg-gradient-to-r from-red-600 to-amber-600 hover:opacity-90 text-white px-4 py-2 rounded-xl font-bold transition-all text-xs">
-                        Đăng Nhập / Đăng Ký
-                    </button>
-                `;
-                document.getElementById('btn-add-channel').classList.add('hidden');
+                userDisplay.innerHTML = `<span class="text-amber-500 bg-amber-950/20 border border-amber-900/30 px-3 py-1.5 rounded-xl">Chế độ Khách</span>`;
             }
-            renderChatInput();
-            renderVideoSubmitForm();
-        }
 
-        function openAuthModal() { document.getElementById('auth-modal').classList.remove('hidden'); }
-        function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
-
-        document.getElementById('btn-login-submit').addEventListener('click', () => {
-            const usernameInput = document.getElementById('modal-username').value.trim();
-            const roleSelect = document.getElementById('modal-role').value;
-            if (!usernameInput) return alert('Vui lòng nhập biệt danh!');
-
-            currentUser = { username: usernameInput, role: roleSelect };
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            closeAuthModal();
-            renderAuthStatus();
+            listenForumPosts();
         });
 
-        function logout() {
-            currentUser = null;
-            localStorage.removeItem('currentUser');
-            renderAuthStatus();
-        }
-
-        // --- 2. THEO DÕI PHÒNG CHAT CHẠY THẬT (REALTIME CHANNELS) ---
-        function listenChannels() {
-            db.ref('channels').on('value', (snapshot) => {
+        function listenForumPosts() {
+            db.ref('forum_posts').on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (!data) {
-                    // Tạo phòng mặc định nếu database trống
-                    db.ref('channels').set({
-                        'global': { id: 'global', name: 'global', isLocked: false },
-                        'giao-dich': { id: 'giao-dich', name: 'giao-dich', isLocked: true },
-                        'show-clip': { id: 'show-clip', name: 'show-clip', isLocked: false }
+                    // Tạo bài đăng mẫu gốc nếu DB trắng trơn
+                    db.ref('forum_posts').set({
+                        'init_post': {
+                            id: 'init_post',
+                            category: 'luat-forum',
+                            author: 'Mạnh Lâm (Dev)',
+                            title: 'NỘI QUY HOẠT ĐỘNG DIỄN ĐÀN VNEDIT TEAM',
+                            content: 'Chào mừng anh em đến với diễn đàn VNedit!\n\nĐể diễn đàn luôn văn minh, hãy chú ý:\n1. Nghiêm cấm spam link độc hại, đồi trụy.\n2. Tôn trọng sản phẩm của người khác, không ăn cắp bản quyền (reup không xin phép).\n3. Giao dịch mua bán preset tự thỏa thuận, admin không chịu trách nhiệm nếu không qua trung gian.\n\nChúc anh em lên tay nghề nhanh chóng!',
+                            date: 'Mới tạo'
+                        }
                     });
                     return;
                 }
-                
-                channels = Object.values(data);
-                renderChannelsList();
+                allPosts = Object.values(data);
+                renderPosts();
             });
         }
 
-        function renderChannelsList() {
-            const container = document.getElementById('channel-list');
+        function switchCategory(catId) {
+            activeCategory = catId;
+            
+            // Xóa class active của nút cũ và thêm cho nút mới
+            document.querySelectorAll('button[id^="btn-"]').forEach(btn => {
+                btn.className = "w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-400 hover:bg-slate-900/40 hover:text-slate-200";
+            });
+            const activeBtn = document.getElementById(`btn-${catId}`);
+            if (activeBtn) {
+                activeBtn.className = "w-full text-left px-3 py-1.5 rounded-xl text-xs flex items-center justify-between transition-all text-slate-300 bg-slate-900 font-bold border-l-2 border-red-500";
+            }
+
+            // Đổi text tiêu đề & mô tả
+            document.getElementById('current-category-title').innerText = CATEGORY_INFOS[catId].title;
+            document.getElementById('current-category-desc').innerText = CATEGORY_INFOS[catId].desc;
+
+            renderPosts();
+        }
+
+        function renderPosts() {
+            const container = document.getElementById('posts-container');
             container.innerHTML = '';
-            channels.forEach(ch => {
-                const isActive = ch.id === activeChannelId;
+
+            // Lọc bài theo phân mục và xếp mới nhất lên đầu
+            const filtered = allPosts
+                .filter(p => p.category === activeCategory)
+                .sort((a, b) => b.id - a.id);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 border border-dashed border-slate-900 rounded-2xl bg-slate-900/10">
+                        <i class="fa-regular fa-folder-open text-slate-700 text-3xl mb-3"></i>
+                        <p class="text-xs text-slate-500">Mục này chưa có bài viết nào cả. Hãy là người đầu tiên đặt gạch nhé!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(p => {
                 container.innerHTML += `
-                    <button onclick="switchChannel('${ch.id}')" class="w-full text-left px-3 py-2 rounded-xl text-sm flex items-center justify-between transition-all ${isActive ? 'bg-slate-900 text-white border-l-2 border-red-500 font-bold' : 'text-slate-400 hover:bg-slate-900/40 hover:text-slate-200'}">
-                        <span># ${ch.name}</span>
-                        ${ch.isLocked ? '<i class="fa-solid fa-lock text-slate-500 text-xs"></i>' : ''}
-                    </button>
-                `;
-            });
-        }
-
-        function switchChannel(channelId) {
-            activeChannelId = channelId;
-            renderChannelsList();
-            const targetCh = channels.find(ch => ch.id === channelId);
-            if (targetCh) {
-                document.getElementById('active-channel-name').innerText = `#${targetCh.name}`;
-                if (targetCh.isLocked) {
-                    document.getElementById('channel-lock-badge').classList.remove('hidden');
-                } else {
-                    document.getElementById('channel-lock-badge').classList.add('hidden');
-                }
-            }
-            renderChatInput();
-            listenMessages(); // Tải lại tin nhắn của phòng mới
-        }
-
-        document.getElementById('btn-add-channel').addEventListener('click', () => {
-            if (!currentUser || currentUser.role !== 'owner') return;
-            const newName = prompt("Nhập tên nhóm chat mới (viết liền không dấu, ví dụ: 'giao-luu-ae'):");
-            if (!newName) return;
-            const formattedName = newName.toLowerCase().replace(/\s+/g, '-');
-            const isLocked = confirm("Khóa nhóm chat này (Chỉ Owner/Chủ bốc được gửi tin nhắn)?");
-            
-            db.ref('channels/' + formattedName).set({
-                id: formattedName,
-                name: formattedName,
-                isLocked: isLocked
-            });
-        });
-
-        // --- 3. TIN NHẮN CHẠY THẬT (REALTIME MESSAGES) ---
-        function listenMessages() {
-            db.ref('messages/' + activeChannelId).limitToLast(100).on('value', (snapshot) => {
-                const container = document.getElementById('chat-messages');
-                container.innerHTML = '';
-                const data = snapshot.val();
-                
-                if (!data) {
-                    container.innerHTML = `<div class="text-center text-slate-600 text-xs py-8">Chưa có tin nhắn nào ở phòng này. Hãy mở bát đi!</div>`;
-                    return;
-                }
-
-                Object.values(data).forEach(m => {
-                    const isOwner = m.role === 'owner';
-                    container.innerHTML += `
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-xs ${isOwner ? 'bg-gradient-to-tr from-red-600 to-amber-500 text-white' : 'bg-slate-800 text-indigo-400'}">
-                                ${m.username.substring(0, 2).toUpperCase()}
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <span class="font-bold text-slate-200">${m.username}</span>
-                                    ${isOwner ? '<span class="bg-red-950 text-red-400 text-[9px] px-1.5 py-0.2 rounded font-bold">Owner</span>' : ''}
-                                    <span class="text-[10px] text-slate-500">${m.time}</span>
-                                </div>
-                                <p class="text-slate-300 mt-1">${m.text}</p>
-                            </div>
+                    <div class="bg-slate-900/40 border border-slate-900 hover:border-slate-800/85 p-5 rounded-2xl space-y-3 transition-all">
+                        <div class="flex justify-between items-center text-xs text-slate-500">
+                            <span class="font-bold text-red-500">👤 Đăng bởi: ${p.author}</span>
+                            <span>${p.date}</span>
                         </div>
-                    `;
-                });
-                container.scrollTop = container.scrollHeight;
-            });
-        }
-
-        function renderChatInput() {
-            const container = document.getElementById('chat-input-container');
-            const targetCh = channels.find(ch => ch.id === activeChannelId);
-
-            if (!currentUser) {
-                container.innerHTML = `
-                    <div class="w-full text-center py-2 text-xs text-slate-500">
-                        Vui lòng <button onclick="openAuthModal()" class="text-red-500 underline font-bold">đăng nhập</button> để bắt đầu trò chuyện thật.
+                        <h3 class="text-base font-extrabold text-white">${p.title}</h3>
+                        <p class="text-sm text-slate-300 whitespace-pre-line leading-relaxed">${p.content}</p>
                     </div>
                 `;
-                return;
-            }
-
-            if (targetCh && targetCh.isLocked && currentUser.role !== 'owner') {
-                container.innerHTML = `
-                    <div class="w-full text-center py-2 text-xs text-red-500/80 font-bold">
-                        <i class="fa-solid fa-lock mr-1"></i> Nhóm chat này bị khóa. Chỉ có Chủ Bốc được quyền nhắn ở đây.
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = `
-                <input id="input-msg-text" type="text" placeholder="Nhập tin nhắn..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-200 text-sm focus:outline-none focus:border-red-500 transition-all">
-                <button onclick="sendMessage()" class="bg-red-600 hover:bg-red-500 text-white px-5 py-2.5 rounded-xl font-bold transition-all">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
-            `;
-
-            document.getElementById('input-msg-text').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') sendMessage();
             });
         }
 
-        function sendMessage() {
-            const input = document.getElementById('input-msg-text');
-            if (!input || !input.value.trim()) return;
-
-            const msgRef = db.ref('messages/' + activeChannelId).push();
-            msgRef.set({
-                id: Date.now(),
-                username: currentUser.username,
-                role: currentUser.role,
-                text: input.value.trim(),
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            });
-
-            input.value = '';
+        function openPostModal() {
+            document.getElementById('post-modal').classList.remove('hidden');
+        }
+        function closePostModal() {
+            document.getElementById('post-modal').classList.add('hidden');
         }
 
-        // --- 4. THEO DÕI VIDEO & CHẤM ĐIỂM REALTIME ---
-        function listenVideos() {
-            db.ref('videos').on('value', (snapshot) => {
-                const data = snapshot.val() || {};
-                const videoList = Object.keys(data).map(key => ({ key, ...data[key] }));
-                renderLeaderboardAndPending(videoList);
-            });
-        }
+        function submitNewPost() {
+            let author = "";
+            if (currentUser) {
+                author = currentUser.username;
+            } else {
+                author = document.getElementById('post-author').value.trim();
+            }
+            
+            const title = document.getElementById('post-title').value.trim();
+            const content = document.getElementById('post-content').value.trim();
 
-        function renderVideoSubmitForm() {
-            const container = document.getElementById('video-submit-form');
-            if (!currentUser) {
-                container.innerHTML = `<p class="text-xs text-slate-500">Đăng nhập để có thể đăng link video tham gia đua top.</p>`;
+            if (!author || !title || !content) {
+                alert('Vui lòng nhập đầy đủ họ tên, tiêu đề và nội dung nhé!');
                 return;
             }
 
-            container.innerHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <input id="input-vid-title" type="text" placeholder="Tên Clip (VD: Messi Edit)" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-red-500 text-white">
-                    <input id="input-vid-url" type="text" placeholder="Đường dẫn Clip (TikTok/YouTube)" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-red-500 text-white">
-                </div>
-                <button onclick="submitVideo()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs py-2 rounded-xl font-bold transition-all">
-                    Nộp Bài Ngay
-                </button>
-            `;
-        }
-
-        function submitVideo() {
-            const title = document.getElementById('input-vid-title').value.trim();
-            const url = document.getElementById('input-vid-url').value.trim();
-            if (!title || !url) return alert('Vui lòng điền đầy đủ tên clip và link clip!');
-
-            db.ref('videos').push({
-                creator: currentUser.username,
+            const postId = Date.now();
+            const postRef = db.ref('forum_posts/' + postId);
+            
+            postRef.set({
+                id: postId,
+                category: activeCategory,
+                author: author,
                 title: title,
-                url: url,
-                score: null
+                content: content,
+                date: new Date().toLocaleDateString('vi-VN') + " lúc " + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            }).then(() => {
+                closePostModal();
+                document.getElementById('post-title').value = '';
+                document.getElementById('post-content').value = '';
+                if (!currentUser) document.getElementById('post-author').value = '';
+            }).catch(err => {
+                alert("Lỗi không đăng được bài: " + err.message);
             });
-
-            alert('Nộp clip thành công! Clip đã được đẩy realtime lên danh sách hàng chờ.');
-            document.getElementById('input-vid-title').value = '';
-            document.getElementById('input-vid-url').value = '';
         }
-
-        function renderLeaderboardAndPending(videoList) {
-            const leaderboardContainer = document.getElementById('leaderboard-list');
-            const pendingContainer = document.getElementById('pending-videos');
-            
-            leaderboardContainer.innerHTML = '';
-            pendingContainer.innerHTML = '';
-
-            const gradedVideos = videoList.filter(v => v.score !== null && v.score !== undefined).sort((a, b) => b.score - a.score);
-            const pendingVideos = videoList.filter(v => v.score === null || v.score === undefined);
-
-            // Bảng xếp hạng
-            if (gradedVideos.length === 0) {
-                leaderboardContainer.innerHTML = `<p class="text-xs text-slate-600 italic">Chưa có ai được xếp hạng. Đang chờ Chủ Bốc chấm điểm!</p>`;
-            } else {
-                gradedVideos.forEach((v, index) => {
-                    let medal = `<span class="text-slate-400 font-bold text-xs">#${index + 1}</span>`;
-                    if (index === 0) medal = `🥇`;
-                    if (index === 1) medal = `🥈`;
-                    if (index === 2) medal = `🥉`;
-
-                    leaderboardContainer.innerHTML += `
-                        <div class="flex items-center justify-between bg-slate-900/50 p-3 rounded-xl border border-slate-800/60">
-                            <div class="flex items-center gap-3">
-                                ${medal}
-                                <div>
-                                    <h4 class="text-xs font-bold text-white">${v.creator}</h4>
-                                    <a href="${v.url}" target="_blank" class="text-[10px] text-slate-500 hover:underline">${v.title} <i class="fa-solid fa-up-right-from-square"></i></a>
-                                </div>
-                            </div>
-                            <span class="text-xs font-extrabold text-amber-500 bg-amber-950/40 px-2 py-0.5 rounded border border-amber-900/40">${v.score}đ</span>
-                        </div>
-                    `;
-                });
-            }
-
-            // Clips Chờ Duyệt
-            if (pendingVideos.length === 0) {
-                pendingContainer.innerHTML = `<p class="text-xs text-slate-600 italic">Không có clip nào đang chờ duyệt.</p>`;
-            } else {
-                pendingVideos.forEach(v => {
-                    const isOwner = currentUser && currentUser.role === 'owner';
-                    pendingContainer.innerHTML += `
-                        <div class="bg-slate-950 border border-slate-900 p-3 rounded-xl space-y-2">
-                            <div>
-                                <h4 class="text-xs font-bold text-slate-300">Editor: ${v.creator}</h4>
-                                <a href="${v.url}" target="_blank" class="text-[10px] text-red-400 hover:underline">${v.title} <i class="fa-solid fa-up-right-from-square"></i></a>
-                            </div>
-                            ${isOwner ? `
-                                <div class="flex gap-2">
-                                    <input id="score-input-${v.key}" type="number" step="0.1" placeholder="Điểm (VD: 9.5)" class="w-24 bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none">
-                                    <button onclick="gradeVideo('${v.key}')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1 rounded text-xs font-bold transition-all">Lưu</button>
-                                </div>
-                            ` : '<p class="text-[10px] text-slate-500 italic">Đang chờ Chủ Bốc chấm điểm...</p>'}
-                        </div>
-                    `;
-                });
-            }
-        }
-
-        window.gradeVideo = function(videoKey) {
-            const scoreInput = document.getElementById(`score-input-${videoKey}`);
-            if (!scoreInput) return;
-            const score = parseFloat(scoreInput.value);
-            if (isNaN(score) || score < 0 || score > 10) return alert('Vui lòng nhập số điểm hợp lệ từ 0 đến 10!');
-
-            db.ref('videos/' + videoKey).update({ score: score })
-                .then(() => alert('Đã cập điểm lên Firebase Realtime!'))
-                .catch(err => alert('Lỗi: ' + err.message));
-        };
     </script>
 </body>
 </html>
